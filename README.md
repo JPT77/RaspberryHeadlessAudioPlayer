@@ -6,13 +6,18 @@ This project contains two files.
 - a service file to make systemd start the Python script in background
 
 ## Requirements
-- python3
-- pip3
+On Raspian buster you need to install via APT:
+- mpd git libespeak1
+- python3-pip python3-mpd python3-gst-1.0 python3-rpi.gpio
+
+optional for manually fiddling with mpd and gpio:
+- mpc gpio-utils
+
+and via pip3:
 - pyttsx3
-- mpd
-- gstreamer
-- gpio?
-- ...
+
+On other platforms package names may be different. 
+And some python3 packages might be better to install via pip3.
 
 ## Installation
 - install the above mentioned packages
@@ -26,3 +31,4 @@ This project contains two files.
 - check your audio volume using alsamixer
 - check your audio device using ...
 - ...
+
