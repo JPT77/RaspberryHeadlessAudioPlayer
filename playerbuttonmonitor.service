@@ -1,0 +1,24 @@
+[Unit]
+Description=Media-Player Button-Monitor
+After=network.target mpd.service
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/RaspberryMediaPlayer
+ExecStart=/home/pi/RaspberryMediaPlayer/playerbuttonmonitor.py
+Restart=on-success
+# TODO which one to use?
+# on-success: SIGHUP, SIGINT, SIGTERM or SIGPIPE,
+# on-failure: error, watchdog, timeout, other signals ?
+# on-abnormal: watchdog, failure, timeout, other signals ?
+# on-abort: other signals
+# on-watchdog
+# always
+
+[Install]
+# if installed as user service:
+#WantedBy=default.target
+# if installed as system service:
+WantedBy=multi-user.target
