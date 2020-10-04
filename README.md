@@ -22,7 +22,7 @@ This project contains two files.
 - chown root:root service-file
 - enable service
 
-## configuraten
+## Configuration
 - check your audio volume using alsamixer
 - check your audio device using ...
 - ...
