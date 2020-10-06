@@ -122,8 +122,8 @@ if __name__ == '__main__':
     print_mpd_status("Added")
 
   if not mpd.currentsong():
-    speak("Spiele Titel "+ get_track_name(mpd.currentsong()))
     mpd.play()
+    speak("Spiele Titel "+ get_track_name(mpd.currentsong()))
 
   signal.signal(signal.SIGINT, signal_handler)
   signal.pause() # wait for Ctrl-C
