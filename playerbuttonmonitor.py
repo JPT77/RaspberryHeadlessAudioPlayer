@@ -125,5 +125,6 @@ if __name__ == '__main__':
     mpd.play()
     speak("Spiele Titel "+ get_track_name(mpd.currentsong()))
 
+  print("*** Init Finished, Button Monitor Online")
   signal.signal(signal.SIGINT, signal_handler)
   signal.pause() # wait for Ctrl-C
