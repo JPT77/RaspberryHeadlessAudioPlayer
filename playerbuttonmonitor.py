@@ -111,10 +111,10 @@ def play_dir(richtung, text):
         speak("Spiele " + text + " Buch " + get_track_name(mpd.currentsong()))
         mpd.pause()
         return
+  print_mpd_status("Book")
   mpd.pause()
   speak("Kein " + text + " Buch vorhanden")
   mpd.pause()
-
 
 def play_prev_dir():
   play_dir (-1, "vorheriges")
@@ -126,10 +126,10 @@ def btn_left_cb(channel):
   if not mpd.currentsong() or mpd.status().get("state") == "stop":
     mpd.play()
   mpd.previous()
+  print_mpd_status("Left")
   mpd.pause()
   speak("Spiele vorherigen Titel "+ get_track_name(mpd.currentsong()))
   mpd.pause()
-  print_mpd_status("Left")
 
 def btn_play_cb(channel):
   if mpd.status().get("state") == "play":
@@ -144,10 +144,10 @@ def btn_right_cb(channel):
   if not mpd.currentsong() or mpd.status().get("state") == "stop":
     mpd.play()
   mpd.next()
+  print_mpd_status("Right")
   mpd.pause()
   speak("Spiele nächsten Titel "+ get_track_name(mpd.currentsong()))
   mpd.pause()
-  print_mpd_status("Right")
 
 def print_mpd_status(msg):
   print(msg, "\t", mpd.status().get("state"), "\t", len(mpd.playlistinfo()), "\t", mpd.currentsong().get("file"))
@@ -185,15 +185,11 @@ if __name__ == '__main__':
   print_mpd_status("Init")
 
   print("*** Init Player")
+  print_mpd_status("Init")
   if not mpd.playlistinfo():
 
     for song in mpd.listall():
-       # füge alle Titel hinzu, hoffentlich alphabetisch
-#      if song.get("file"):
-#        print("add song:", song.get("file"))
-#        mpd.add(song.get("file"))
-
-      # füge erstes Verzeichnis hinzu
+      # add first book
       if song.get("directory"):
         print("add dir:", song.get("directory"))
         mpd.add(song.get("directory"))
