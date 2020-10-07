@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 
+#sys.path.append(os.path.abspath("~/PersistentMPDClient"))
+# link or copy PersistentMPDClient into local dir
+from PersistentMPDClient import PersistentMPDClient
+
 from mpd import MPDClient, MPDError, CommandError
 
 import pyttsx3
@@ -95,10 +99,9 @@ if __name__ == '__main__':
   GPIO.add_event_detect(BTN_RIGHT_GPIO, GPIO.FALLING, callback=btn_right_cb, bouncetime=BTN_DEBOUNCE)
 
   print ("*** Init MPD")
-  mpd = MPDClient()
+  mpd = PersistentMPDClient(host="localhost", port=6600)
   mpd.timeout = 1                 # network timeout in seconds
   mpd.idletimeout = None          # timeout for fetching the result of the idle command is handled seperately, default: None
-  mpd.connect("localhost", 6600)
   print("MPD Version:", mpd.mpd_version)
 
   print("*** Init Screen")
