@@ -54,7 +54,7 @@ def btn_left_cb(channel):
 def btn_play_cb(channel):
   if mpd.status().get("state") == "play":
     mpd.pause()
-    speak("Pausihrt")
+    speak("Pause")
   else:
     speak("Abspielen")
     mpd.pause()
@@ -131,3 +131,4 @@ if __name__ == '__main__':
   print("*** Init Finished, Button Monitor Online")
   signal.signal(signal.SIGINT, signal_handler)
   signal.pause() # wait for Ctrl-C
+
