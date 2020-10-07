@@ -57,10 +57,16 @@ def btn_callback(channel):
   curr_edge = GPIO.input(channel)
   if curr_edge:
     print ("Button released:", channel)
-    print ("now - pressed", datetime.datetime.now() - cb_pressed_time)
     interval = (datetime.datetime.now() - cb_pressed_time) / timedelta(milliseconds=1)
+
+    # reset to default to detect missed EDGE FALL
     cb_pressed_time = datetime.datetime(year=2020,month=1,day=1)
-    print ("interval ms", interval)
+#    print ("now - pressed", datetime.datetime.now() - cb_pressed_time)
+#    print ("interval ms", interval)
+
+    if interval > 60000:
+      print ("Error: Interval too long, missed EDGE FALL?", interval)
+      return
 
     if interval <= 500:
       if channel == BTN_LEFT_GPIO:
