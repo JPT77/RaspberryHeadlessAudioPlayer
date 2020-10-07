@@ -7,7 +7,7 @@ from PersistentMPDClient import PersistentMPDClient
 
 from mpd import MPDClient, MPDError, CommandError
 
-import pyttsx3
+import pyttsx3 # text to speech
 
 import signal # allow Ctrl-C, never end the program
 import sys
@@ -15,6 +15,11 @@ import RPi.GPIO as GPIO
 
 import datetime # button debounce
 from datetime import timedelta
+
+# expected file and folder structure
+# last dir is book or album name for TTS
+# file name is in alphabatical order and contains chapter number for TTS
+
 BTN_LEFT_GPIO = 3
 BTN_PLAY_GPIO = 15
 BTN_RIGHT_GPIO = 27
@@ -25,8 +30,8 @@ BTN_DEBOUNCE = 50
 def signal_handler(sig, frame):
   print("Received signal:", sig, "-", signal.Signals(sig).name)
   GPIO.cleanup()
-  mpd.close()                     # send the close command
-  mpd.disconnect()                # disconnect from the server
+  mpd.close()
+  mpd.disconnect()
   sys.exit(0)
 
 #    try:
@@ -39,7 +44,7 @@ def signal_handler(sig, frame):
 #        print(e)
 #        speak ("Fehler: ")
 
-def get_track_name(track):
+def get_track_name(track): # for tts
   split1 = track.get("file").split("/")
   split2 = split1[-1].split(".")
   return split1[-2]+ " Kapitel "+split2[0]
@@ -162,7 +167,6 @@ if __name__ == '__main__':
 
   print ("*** Init GPIO")
   GPIO.setmode(GPIO.BCM)
-
   GPIO.setup(BTN_LEFT_GPIO,  GPIO.IN)
   GPIO.setup(BTN_PLAY_GPIO,  GPIO.IN, pull_up_down=GPIO.PUD_UP)
   GPIO.setup(BTN_RIGHT_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
