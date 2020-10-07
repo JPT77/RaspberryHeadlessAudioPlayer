@@ -55,8 +55,7 @@ def btn_callback(channel):
   global cb_pressed_time
 
   curr_edge = GPIO.input(channel)
-  if curr_edge:
-    print ("Button released:", channel)
+  if curr_edge: # button released
     interval = (datetime.datetime.now() - cb_pressed_time) / timedelta(milliseconds=1)
 
     # reset to default to detect missed EDGE FALL
@@ -79,8 +78,7 @@ def btn_callback(channel):
       elif channel == BTN_RIGHT_GPIO:
         play_next_dir()
 
-  else:
-    print ("Button pressed:", channel)
+  else: # button depressed
     cb_pressed_time = datetime.datetime.now()
     if channel == BTN_PLAY_GPIO:
       btn_play_cb(channel)
@@ -94,22 +92,18 @@ def get_current_book(currentsong):
     if dir:
       count += 1 # count only dir type entries
       if dir == bookname:
-        print ("current book", count)
         return count
 
   return -1
 
 def play_dir(richtung, text):
   next_book = get_current_book(mpd.currentsong()) + richtung
-  print ("next book", next_book)
   count = -1
   for song in mpd.listall():
     if song.get("directory"):
-      print("searching for books", count)
       count += 1 # count only dir type entries
       if count == next_book:
         mpd.clear()
-        print("add dir:", song.get("directory"))
         mpd.add(song.get("directory"))
         mpd.play()
         print_mpd_status("Book")
