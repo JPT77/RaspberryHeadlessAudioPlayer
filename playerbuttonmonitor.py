@@ -13,11 +13,13 @@ import signal # allow Ctrl-C, never end the program
 import sys
 import RPi.GPIO as GPIO
 
+import datetime # button debounce
+from datetime import timedelta
 BTN_LEFT_GPIO = 3
 BTN_PLAY_GPIO = 15
 BTN_RIGHT_GPIO = 27
 
-BTN_DEBOUNCE = 300
+BTN_DEBOUNCE = 50
 
 # clean up on Ctrl-C
 def signal_handler(sig, frame):
@@ -41,6 +43,79 @@ def get_track_name(track):
   split1 = track.get("file").split("/")
   split2 = split1[-1].split(".")
   return split1[-2]+ " Kapitel "+split2[0]
+
+cb_pressed_time = datetime.datetime(year=2020,month=1,day=1)
+
+def btn_callback(channel):
+  global cb_pressed_time
+
+  curr_edge = GPIO.input(channel)
+  if curr_edge:
+    print ("Button released:", channel)
+    print ("now - pressed", datetime.datetime.now() - cb_pressed_time)
+    interval = (datetime.datetime.now() - cb_pressed_time) / timedelta(milliseconds=1)
+    cb_pressed_time = datetime.datetime(year=2020,month=1,day=1)
+    print ("interval ms", interval)
+
+    if interval <= 500:
+      if channel == BTN_LEFT_GPIO:
+        btn_left_cb(channel)
+      elif channel == BTN_RIGHT_GPIO:
+        btn_right_cb(channel)
+    else:
+      if channel == BTN_LEFT_GPIO:
+        play_prev_dir()
+      elif channel == BTN_RIGHT_GPIO:
+        play_next_dir()
+
+  else:
+    print ("Button pressed:", channel)
+    cb_pressed_time = datetime.datetime.now()
+    if channel == BTN_PLAY_GPIO:
+      btn_play_cb(channel)
+
+def get_current_book(currentsong):
+  count = -1
+  split = currentsong.get("file").split("/")
+  bookname = split[-2]
+  for song in mpd.listall():
+    dir = song.get("directory")
+    if dir:
+      count += 1 # count only dir type entries
+      if dir == bookname:
+        print ("current book", count)
+        return count
+
+  return -1
+
+def play_dir(richtung, text):
+  next_book = get_current_book(mpd.currentsong()) + richtung
+  print ("next book", next_book)
+  count = -1
+  for song in mpd.listall():
+    if song.get("directory"):
+      print("searching for books", count)
+      count += 1 # count only dir type entries
+      if count == next_book:
+        mpd.clear()
+        print("add dir:", song.get("directory"))
+        mpd.add(song.get("directory"))
+        mpd.play()
+        print_mpd_status("Book")
+        mpd.pause()
+        speak("Spiele " + text + " Buch " + get_track_name(mpd.currentsong()))
+        mpd.pause()
+        return
+  mpd.pause()
+  speak("Kein " + text + " Buch vorhanden")
+  mpd.pause()
+
+
+def play_prev_dir():
+  play_dir (-1, "vorheriges")
+
+def play_next_dir():
+  play_dir (+1, "nächstes")
 
 def btn_left_cb(channel):
   if not mpd.currentsong() or mpd.status().get("state") == "stop":
@@ -91,12 +166,9 @@ if __name__ == '__main__':
   GPIO.setup(BTN_LEFT_GPIO,  GPIO.IN)
   GPIO.setup(BTN_PLAY_GPIO,  GPIO.IN, pull_up_down=GPIO.PUD_UP)
   GPIO.setup(BTN_RIGHT_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-#    GPIO.add_event_detect(BUTTON_GPIO, GPIO.FALLING, callback=button_pressed_callback, bouncetime=100)
-
-  GPIO.add_event_detect(BTN_LEFT_GPIO,  GPIO.FALLING, callback=btn_left_cb,  bouncetime=BTN_DEBOUNCE)
-  GPIO.add_event_detect(BTN_PLAY_GPIO,  GPIO.FALLING, callback=btn_play_cb,  bouncetime=BTN_DEBOUNCE)
-  GPIO.add_event_detect(BTN_RIGHT_GPIO, GPIO.FALLING, callback=btn_right_cb, bouncetime=BTN_DEBOUNCE)
+  GPIO.add_event_detect(BTN_LEFT_GPIO,  GPIO.BOTH, callback=btn_callback, bouncetime=BTN_DEBOUNCE)
+  GPIO.add_event_detect(BTN_PLAY_GPIO,  GPIO.BOTH, callback=btn_callback, bouncetime=BTN_DEBOUNCE)
+  GPIO.add_event_detect(BTN_RIGHT_GPIO, GPIO.BOTH, callback=btn_callback, bouncetime=BTN_DEBOUNCE)
 
   print ("*** Init MPD")
   mpd = PersistentMPDClient(host="localhost", port=6600)
