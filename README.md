@@ -1,4 +1,4 @@
-# RaspberryMediaPlayer
+# RaspberryHeadlessAudioPlayer
 Python server that monitors GPIO buttons and controls the MPD player. It is meant for a headless debian installation on a raspberry pi (tested: 1B and ZeroW), but might work on other devices having a compatible gpio library.
 
 This project contains two files. 
