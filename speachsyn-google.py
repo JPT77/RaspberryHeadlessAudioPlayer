@@ -16,6 +16,7 @@ def deleteOldMp3(path, pattern):
 
 class SpeachSynGoogle():
 	def __init__(self, language, slow, player, tempdir):
+		print ("*** Init Google Text-To-Speech")
 		self.language = language
 		self.slow = slow
 		self.player = player
@@ -23,9 +24,9 @@ class SpeachSynGoogle():
 		deleteOldMp3(tempdir, "*.mp3")
 
 	def speak(self, text):
-		print("text: ", text)
+		print("Speaking:", text)
 		key = hash(text) & (2**64-1)
-		filename = tempdir+"/{0:x}.mp3".format(key)
+		filename = self.tempdir+"/{0:x}.mp3".format(key)
 		if os.path.isfile(filename):
 			print(filename, "found file, playing")
 		else: 
@@ -33,6 +34,9 @@ class SpeachSynGoogle():
 			audio_created = gTTS(text=text, lang=self.language, slow=self.slow)
 			audio_created.save(filename)
 		os.system(f'{self.player} {filename}')
+		
+	def close(self):
+		deleteOldMp3(self.tempdir, "*.mp3")
 
 
 tts = SpeachSynGoogle("en", False, "cvlc", ".")
