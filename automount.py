@@ -46,8 +46,8 @@ def startAutomounter():
 	#bus.add_signal_receiver(onRemoveDisk, 'InterfacesRemoved', 'org.freedesktop.DBus.ObjectManager')
 
 	# start the listener loop
-	from gi.repository import GObject
-	loop = GObject.MainLoop()
+	from gi.repository import GLib
+	loop = GLib.MainLoop()
 	loop.run()
 
 # start the listener thread
