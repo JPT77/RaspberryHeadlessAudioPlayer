@@ -1,38 +1,41 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 
-from pynput.keyboard import Listener
+from pynput.keyboard import Listener, Key
 
-def init( playPrevFile, playNextFile, playPrevDir, playNextDir, pause):
-	this.playPrevFile = playPrevFile
-	this.playNextFile = playNextFile
-	this.playPrevDir  = playPrevDir
-	this.playNextDir  = playNextDir
-	this.pause = pause
+mpd = None
+
+def init(mpdcontroller):
+	print("Init KeyboardListener", mpdcontroller)
+	global mpd
+	mpd = mpdcontroller
+	print("listening for key press")
+	with Listener(on_press=onPress, on_release=onRelease) as listener:
+		listener.join()
 
 def onPress(key):
 	print("Key pressed: {0}".format(key))
-	if key == Key.Left:
-		playPrevFile()
+	print("mpd:", mpd)
+	if key == Key.left:
+		mpd.playPrevFile()
 
-	if key == Key.Right:
-		playNextFile()
+	if key == Key.right:
+		mpd.playNextFile()
 
-	if key == Key.PageUp:
-		playPrevDir()
+	if key == Key.page_up:
+		mpd.playPrevDir()
 
-	if key == Key.PageDown:
-		playNextDir()
+	if key == Key.page_down:
+		mpd.playNextDir()
 		
-	if key == Key.Up:
-		pause()
+	if key == Key.up:
+		mpd.pause()
 		
-	if key == Key.Down:
-		pause()
-		
+	if key == Key.down:
+		mpd.pause()
+
 def onRelease(key):
 	print("Key released: {0}".format(key))
 
-with Listener(on_press=onPress, on_release=onRelease) as listener:
-	listener.join()
+
 
