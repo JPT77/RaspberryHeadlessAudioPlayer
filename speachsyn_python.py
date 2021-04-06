@@ -16,6 +16,3 @@ class SpeachSynPython():
 		self.tts.say(text)
 		self.tts.runAndWait()
 
-
-tts = SpeachSynPython(150, 1.0, "german")
-tts.speak("Hallo")

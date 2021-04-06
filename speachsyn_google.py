@@ -38,9 +38,3 @@ class SpeachSynGoogle():
 	def close(self):
 		deleteOldMp3(self.tempdir, "*.mp3")
 
-
-tts = SpeachSynGoogle("en", False, "cvlc", ".")
-tts.speak("The fox jumps over the lazy dog")
-tts.speak("The fox jumps over the lazy dog")
-
-
