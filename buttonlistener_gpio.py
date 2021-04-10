@@ -16,7 +16,7 @@ BTN_DEBOUNCE = 50
 PAST_TIMESTAMP = datetime.datetime(year=2021,month=1,day=1) # a fixed date in the past
 last_pressed_time = PAST_TIMESTAMP
 
-mpd = none
+mpd = None
 
 def init(mpdcontroller):
 	global mpd
@@ -40,7 +40,7 @@ def gpioCallback(button):
 
 		# reset to default to detect missed EDGE FALL
 		last_pressed_time = PAST_TIMESTAMP
-		#print ("now - pressed", datetime.datetime.now() - cb_pressed_time)
+		#print ("now - pressed", datetime.datetime.now() - last_pressed_time)
 		#print ("interval ms", interval)
 
 		if interval > 60000:
@@ -49,9 +49,9 @@ def gpioCallback(button):
 
 		if interval <= 500:
 			if button == BTN_LEFT_GPIO:
-				mpd.playPrevFile(button)
+				mpd.playPrevFile()
 			elif button == BTN_RIGHT_GPIO:
-				mpd.playNextFile(button)
+				mpd.playNextFile()
 		else:
 			if button == BTN_LEFT_GPIO:
 				mpd.playPrevDir()
@@ -59,7 +59,7 @@ def gpioCallback(button):
 				mpd.playNextDir()
 
 	else: # button depressed
-		cb_pressed_time = datetime.datetime.now()
+		last_pressed_time = datetime.datetime.now()
 		if button == BTN_PLAY_GPIO:
-			mpd.pause(button)
+			mpd.pause()
 
