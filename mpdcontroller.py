@@ -4,15 +4,16 @@
 import sys
 import os
 
+#either set the path to PersistentMPDClient/
 sys.path.append(os.path.abspath("../PersistentMPDClient"))
-# link or copy PersistentMPDClient into local dir
+# or link or copy PersistentMPDClient.py into local dir, then
 from PersistentMPDClient import PersistentMPDClient
 
 from mpd import MPDClient, MPDError, CommandError
 
 import signal # allow Ctrl-C, never end the program
 
-# expected file and folder structure
+# expected file and folder structure:
 # last dir is book or album name for TTS
 # file name is in alphabatical order and contains chapter number for TTS
 
