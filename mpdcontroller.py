@@ -61,7 +61,7 @@ class MpdController():
 
 		if not self.mpd.currentsong():
 			self.mpd.play()
-			
+
 #		tts.speak("Spiele Titel "+ getTrackName(self.mpd.currentsong()))
 		print("*** Init Finished, Button Monitor Online")
 
@@ -170,6 +170,6 @@ else:
 	import buttonlistener_gpio
 	buttonlistener_gpio.init(mpc)
 
-#signal.signal(signal.SIGINT, signal_handler)
-#signal.pause() # wait for Ctrl-C
+signal.signal(signal.SIGINT, signal_handler)
+signal.pause() # wait for Ctrl-C
 
