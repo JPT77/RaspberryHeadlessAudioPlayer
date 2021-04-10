@@ -132,25 +132,44 @@ class MpdController():
 			self.mpd.pause()
 		self.printMpdStatus("Play")
 
+print ('Number of arguments:', len(sys.argv), 'arguments.')
+print ('Argument List:', str(sys.argv))
 
-from speachsyn_python import SpeachSynPython 
-tts = SpeachSynPython(150,1.0, "german")
+if len(sys.argv) != 4:
+	print("Usage:", sys.argv[0], "<Server> <SpeachSyn> <ButtonMonitor>")
+	print("\t Server: localhost, servername or IP address")
+	print("\t Speachsynthesizer: System or Google")
+	print("\t Buttonmonitor: Keyboard or GPIO")
+	sys.exit(-1)
 
-#from speachsyn_google import SpeachSynGoogle 
-#tts = SpeachSynGoogle("de",False,"cvlc",".")
+syn = sys.argv[2].upper()
+if syn == "SYSTEM":
+	from speachsyn_python import SpeachSynPython
+	tts = SpeachSynPython(150,1.0, "german")
+elif syn == "GOOGLE":
+	from speachsyn_google import SpeachSynGoogle
+	tts = SpeachSynGoogle("de",False,"cvlc",".")
+else:
+	print("Unknown Synth:", syn, "Using default SpeachSynthesizer System")
+	from speachsyn_python import SpeachSynPython
+	tts = SpeachSynPython(150,1.0, "german")
 
-mpc = MpdController("raspberrypi", tts)
-#mpc = MpdController("audioplayer", tts)
-#mpc = MpdController("localhost", tts)
+mpc = MpdController(mpdserver=sys.argv[1], tts=tts)
 
 mpc.init()
 
-#import buttonlistener_gpio 
-#buttonlistener_gpio.init(mpc)
+buttons = sys.argv[3].upper()
+if buttons == "KEYBOARD":
+	import buttonlistener_keyboard
+	buttonlistener_keyboard.init(mpc)
+elif buttons == "GPIO":
+	import buttonlistener_gpio
+	buttonlistener_gpio.init(mpc)
+else:
+	print("Unknown ButtonMonitor:", buttons, "Using default GPIO")
+	import buttonlistener_gpio
+	buttonlistener_gpio.init(mpc)
 
-import buttonlistener_keyboard
-buttonlistener_keyboard.init(mpc)
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.pause() # wait for Ctrl-C
+#signal.signal(signal.SIGINT, signal_handler)
+#signal.pause() # wait for Ctrl-C
 
