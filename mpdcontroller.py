@@ -174,7 +174,9 @@ else:
 	buttonlistener_gpio.init(mpc)
 
 mount = sys.argv[4].upper()
-if mount == "enabled" || mount == "yes" || mount == "on" || mount == "1" 
+print(mount)
+if mount == "ENABLED" or mount == "YES" or mount == "ON" or mount == "1":
+	print("Starting automounter")
 	import automount
 
 signal.signal(signal.SIGINT, signal_handler)
