@@ -20,9 +20,8 @@ import signal # allow Ctrl-C, never end the program
 # clean up on Ctrl-C
 def signal_handler(sig, frame):
 	print("Received signal:", sig, "-", signal.Signals(sig).name)
-	GPIO.cleanup()
-	mpd.close()
-	mpd.disconnect()
+	#GPIO.cleanup()
+	mpc.close()
 	sys.exit(0)
 
 def getTrackName(track): # for tts
@@ -131,6 +130,10 @@ class MpdController():
 			tts.speak("Abspielen")
 			self.mpd.pause()
 		self.printMpdStatus("Play")
+
+	def close(self):
+		self.mpd.close()
+		self.mpd.disconnect()
 
 print ('Number of arguments:', len(sys.argv), 'arguments.')
 print ('Argument List:', str(sys.argv))
