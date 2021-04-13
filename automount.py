@@ -56,6 +56,6 @@ thread.daemon=True # enable Ctrl+C
 thread.start()
 
 # run program in an endless loop until Ctrl-C
-while True:
-    time.sleep(1)
+#while True:
+#    time.sleep(1)
 

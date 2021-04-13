@@ -135,11 +135,12 @@ class MpdController():
 print ('Number of arguments:', len(sys.argv), 'arguments.')
 print ('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 4:
-	print("Usage:", sys.argv[0], "<Server> <SpeachSyn> <ButtonMonitor>")
+if len(sys.argv) != 5:
+	print("Usage:", sys.argv[0], "<Server> <SpeachSyn> <ButtonMonitor> <automount>")
 	print("\t Server: localhost, servername or IP address")
 	print("\t Speachsynthesizer: System or Google")
 	print("\t Buttonmonitor: Keyboard or GPIO")
+	print("\t Automount: enabled or disabled")
 	sys.exit(-1)
 
 syn = sys.argv[2].upper()
@@ -150,12 +151,11 @@ elif syn == "GOOGLE":
 	from speachsyn_google import SpeachSynGoogle
 	tts = SpeachSynGoogle("de",False,"cvlc",".")
 else:
-	print("Unknown Synth:", syn, "Using default SpeachSynthesizer System")
+	print("Unknown Synth:", syn, "Using default speach synthesizer System")
 	from speachsyn_python import SpeachSynPython
 	tts = SpeachSynPython(150,1.0, "german")
 
 mpc = MpdController(mpdserver=sys.argv[1], tts=tts)
-
 mpc.init()
 
 buttons = sys.argv[3].upper()
@@ -170,6 +170,9 @@ else:
 	import buttonlistener_gpio
 	buttonlistener_gpio.init(mpc)
 
+mount = sys.argv[4].upper()
+if mount == "enabled" || mount == "yes" || mount == "on" || mount == "1" 
+	import automount
+
 signal.signal(signal.SIGINT, signal_handler)
 signal.pause() # wait for Ctrl-C
-
