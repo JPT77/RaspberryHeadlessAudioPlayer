@@ -7,7 +7,13 @@ Type=simple
 User=pi
 Group=pi
 WorkingDirectory=/home/pi/RaspberryHeadlessAudioPlayer
-ExecStart=/home/pi/RaspberryHeadlessAudioPlayer/mpdcontroller.py
+ExecStart=/home/pi/RaspberryHeadlessAudioPlayer/mpdcontroller.py localhost google gpio enabled
+#Usage: ./mpdcontroller.py <Server> <SpeachSyn> <ButtonMonitor> <automount>
+#         Server: localhost, servername or IP address
+#         Speachsynthesizer: System or Google
+#         Buttonmonitor: Keyboard or GPIO
+#         Automount: enabled or disabled
+
 Restart=on-success
 # TODO which one to use?
 # on-success: SIGHUP, SIGINT, SIGTERM or SIGPIPE,
