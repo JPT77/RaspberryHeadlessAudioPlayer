@@ -88,13 +88,13 @@ class MpdController():
 					self.mpd.play()
 					self.printMpdStatus("Book")
 					self.mpd.pause()
-					tts.speak("Spiele " + text + " Buch " + getTrackName(self.mpd.currentsong()))
+					tts.speak("Spiele " + text + " Buch ")
+					tts.speak(getTrackName(self.mpd.currentsong()))
 					self.mpd.pause()
 					return
 		self.printMpdStatus("Book")
 		self.mpd.pause()
 		tts.speak("Kein " + text + " Buch vorhanden")
-		self.mpd.pause()
 
 	def playPrevDir(self):
 		self.playDir(-1, "vorheriges")
@@ -115,6 +115,11 @@ class MpdController():
 	def playNextFile(self):
 		if not self.mpd.currentsong() or self.mpd.status().get("state") == "stop":
 			self.mpd.play()
+		if not self.mpd.currentsong():
+			tts.speak("Dies war der letzte Titel.")
+			self.playNextDir()
+			return
+
 		self.mpd.next()
 		self.printMpdStatus("Right")
 		self.mpd.pause()
