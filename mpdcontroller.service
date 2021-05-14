@@ -1,13 +1,13 @@
 [Unit]
-Description=Media-Player Button-Monitor
+Description=MPD-Controller
 After=network.target mpd.service
 
 [Service]
 Type=simple
 User=pi
 Group=pi
-WorkingDirectory=/home/pi/RaspberryMediaPlayer
-ExecStart=/home/pi/RaspberryMediaPlayer/playerbuttonmonitor.py
+WorkingDirectory=/home/pi/RaspberryHeadlessAudioPlayer
+ExecStart=/home/pi/RaspberryHeadlessAudioPlayer/mpdcontroller.py
 Restart=on-success
 # TODO which one to use?
 # on-success: SIGHUP, SIGINT, SIGTERM or SIGPIPE,
