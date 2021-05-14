@@ -1,0 +1,4 @@
+/__pycache__/
+/bak/
+*.mp3
+PersistentMPDClient.py
