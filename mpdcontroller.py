@@ -152,7 +152,7 @@ if syn == "SYSTEM":
 	tts = SpeachSynPython(150,1.0, "german")
 elif syn == "GOOGLE":
 	from speachsyn_google import SpeachSynGoogle
-	tts = SpeachSynGoogle("de",False,"cvlc",".")
+	tts = SpeachSynGoogle("de",False,"mpg123 -q",".")
 else:
 	print("Unknown Synth:", syn, "Using default speach synthesizer System")
 	from speachsyn_python import SpeachSynPython
