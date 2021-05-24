@@ -182,6 +182,7 @@ mount = sys.argv[4].upper()
 if mount == "ENABLED" or mount == "YES" or mount == "ON" or mount == "1":
 	print("*** Init automounter")
 	import automount
+	automount.init(mpc)
 
 signal.signal(signal.SIGINT, signal_handler)
 signal.pause() # wait for Ctrl-C

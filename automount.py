@@ -33,10 +33,11 @@ def startAutomounter():
 	loop = GLib.MainLoop()
 	loop.run()
 
-# start the listener thread
-thread=threading.Thread(target=startAutomounter)
-thread.daemon=True # enable Ctrl+C 
-thread.start()
+def init(mpdcontroller):
+	# start the listener thread
+	thread=threading.Thread(target=startAutomounter)
+	thread.daemon=True # enable Ctrl+C
+	thread.start()
 
 # run program in an endless loop until Ctrl-C
 #import time
