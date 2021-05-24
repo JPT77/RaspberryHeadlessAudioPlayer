@@ -39,8 +39,10 @@ def init(mpdcontroller):
 	thread.daemon=True # enable Ctrl+C
 	thread.start()
 
-# run program in an endless loop until Ctrl-C
-#import time
-#while True:
-#	time.sleep(1)
+if __name__ == "__main__": # only run if called directly, so for testing only
+	import time
+	init(None)
+
+	while True:
+		time.sleep(1)
 

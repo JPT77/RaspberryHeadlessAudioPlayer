@@ -16,26 +16,29 @@ def init(mpdcontroller):
 def onPress(key):
 	print("Key pressed: {0}".format(key))
 	print("mpd:", mpd)
-	if key == Key.left:
-		mpd.playPrevFile()
+	if mpd: # do nothing if MPD is not set (ie. stand-alone test)
+		if key == Key.left:
+			mpd.playPrevFile()
 
-	if key == Key.right:
-		mpd.playNextFile()
+		if key == Key.right:
+			mpd.playNextFile()
 
-	if key == Key.page_up:
-		mpd.playPrevDir()
+		if key == Key.page_up:
+			mpd.playPrevDir()
 
-	if key == Key.page_down:
-		mpd.playNextDir()
-		
-	if key == Key.up:
-		mpd.pause()
-		
-	if key == Key.down:
-		mpd.pause()
+		if key == Key.page_down:
+			mpd.playNextDir()
+
+		if key == Key.up:
+			mpd.pause()
+
+		if key == Key.down:
+			mpd.pause()
 
 def onRelease(key):
 	print("Key released: {0}".format(key))
 
 
+if __name__ == "__main__": # only run if called directly, so for testing only
+	init(None)
 
